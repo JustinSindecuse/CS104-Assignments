@@ -1,0 +1,82 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <stack>
+
+using namespace std;
+
+int main(int argc, char* argv[]){
+	if(argc != 2){
+		return -1;
+	}
+
+	stack <char> directions;
+
+	char x;
+
+	ifstream in;
+	in.open(argv[1]);
+
+	bool firstloop = true;
+
+	//each time a new direction is read in, add it to the stack
+	//only do this unless previous direction is opposite,
+	//if it is, pop the stack instead
+	while(!in.fail()){
+		in >> x;
+		if(in.eof()){
+			break;
+		}
+		if(firstloop){
+			directions.push(x);
+			firstloop = false;
+		}
+		if(x == 'N'){
+			if(directions.top() == 'S'){
+				directions.pop();
+			}
+			else{
+				directions.push(x);
+			}
+		}
+		if(x == 'S'){
+			if(directions.top() == 'N'){
+				directions.pop();
+			}
+			else{
+				directions.push(x);
+			}
+		}
+		if(x == 'E'){
+			if(directions.top() == 'W'){
+				directions.pop();
+			}
+			else{
+				directions.push(x);
+			}
+		}
+		if(x == 'W'){
+			if(directions.top() == 'E'){
+				directions.pop();
+			}
+			else{
+				directions.push(x);
+			}
+		}
+	}
+
+	int steps = 0;
+
+	while(!directions.empty()){
+		directions.pop();
+		if(directions.empty()){
+			break;
+		}
+		steps++;
+	}
+
+	cout << steps << endl;
+
+	return 0;
+
+}
